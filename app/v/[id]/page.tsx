@@ -58,8 +58,7 @@ export async function generateMetadata(
             description,
             images: [...previousOgImages, image],
             url: `/v/${file.filecode}`,
-            type: `video.other`,
-            videos: `https://${upstream}/e/${file.filecode}`,
+            type: `article`,
         },
         alternates: {
             canonical: `/v/${file.filecode}`,
@@ -89,22 +88,57 @@ const jsonLd = {
         thumbnailUrl: file.splash_img,
         description: `${file.title} di ${SITENAME} Video Bokep Indo Jepang Barat Terbaru bocil jilbab smp mama sma hijab abg colmek film tante hot`,
         url: `https://bokepsin.pages.dev/v/${file.filecode}`,
-        embedUrl: `https://${upstream}/${file.filecode}`,
+        embedUrl: `https://${upstream}/e/${file.filecode}`,
         uploadDate: new Date(
             file.uploaded + ".000Z"
         ).toISOString(),
+        interactionStatistic: {
+            '@type': `InteractionCounter`,
+                userInteractionCount: `${file.views}`,
+            interactionType: {
+                '@type': `WatchAction`,
+                target: `https://bokepsin.pages.dev/v/${file.filecode}`
+            }  
+        }
         }
         const jsonLd2 = {
         '@context': 'https://schema.org',
-        '@type': 'WebPage',
+        '@type': 'Article',
         headline: `${file.title} - ${SITENAME}`,
         image: file.splash_img,
-        thumbnailUrl: file.splash_img,
         description: `${file.title} di ${SITENAME} Video Bokep Indo Jepang Barat Terbaru bocil jilbab smp mama sma hijab abg colmek film tante hot`,
         url: `https://bokepsin.pages.dev/v/${file.filecode}`,
         datePublished: new Date(
             file.uploaded + ".000Z"
         ).toISOString(),
+        publisher: {
+            '@type': 'Organization',
+            name: `${SITENAME}`,
+            logo: 'https://bokepsin.pages.dev/favicon.ico'},
+            author: {
+                '@type': 'Person',
+                name: 'admin',
+                url: 'https://bokepsin.pages.dev'
+              },
+        interactionStatistic: {
+            '@type': `InteractionCounter`,
+                userInteractionCount: `${file.views}`,
+            interactionType: {
+                '@type': `ReadAction`,
+                target: `https://bokepsin.pages.dev/v/${file.filecode}`
+            }  
+        }
+        }
+        const jsonLd3 = {
+            '@context': 'https://schema.org', 
+            '@type': 'Book', 
+            'name': `${file.title} - ${SITENAME}`, 
+            'aggregateRating': {
+            '@type': 'AggregateRating',	
+                'ratingValue': '5',	
+                'ratingCount': `${file.views}`,	
+                'bestRating': '5',	
+                'worstRating': '1' }
         }
     return (
         <div className="grid col-span-full gap-4 md:gap-4 md:mx-10">
@@ -118,11 +152,15 @@ const jsonLd = {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd2) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd3) }}
+        />
         {/* ... */}
         </section>
             <iframe
                 className="w-full h-[30vh] md:h-[55vh] lg:h-[70vh]"
-                src={`https://${upstream}${file.protected_embed}`}
+                src={`https://${upstream}/e/${file.filecode}`}
                 scrolling="no"
                 title={file.title}
                 frameBorder={0}
